@@ -1,6 +1,6 @@
-import { router } from "expo-router";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { router } from 'expo-router';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 const ShoppingScreen = () => {
   return (
@@ -9,7 +9,7 @@ const ShoppingScreen = () => {
       <TouchableOpacity
         onPress={() => {
           router.navigate({
-            pathname: "browser",
+            pathname: 'browser',
           });
         }}
       >

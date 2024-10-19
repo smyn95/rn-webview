@@ -1,5 +1,5 @@
 module.exports = {
-  trailingComma: "all",
+  trailingComma: 'all',
   tabWidth: 2,
   printWidth: 80,
   useTabs: false,
@@ -8,8 +8,6 @@ module.exports = {
   jsxSingleQuote: false,
   bracketSameLine: false,
   bracketSpacing: true,
-  endOfLine: "lf",
-  arrowParens: "avoid",
-  plugins: ["prettier-plugin-tailwindcss"],
-  tailwindConfig: "./tailwind.config.js",
+  endOfLine: 'lf',
+  arrowParens: 'avoid',
 };
