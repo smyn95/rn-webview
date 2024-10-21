@@ -1,6 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
+  Animated,
   Platform,
   SafeAreaView,
   StatusBar,
@@ -10,7 +11,7 @@ import {
 } from 'react-native';
 import WebView from 'react-native-webview';
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   safeArea: {
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     flex: 1,
@@ -23,6 +24,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   urlText: { color: 'white' },
+  loadingBarBackground: {
+    height: 3,
+    backgroundColor: 'white',
+  },
+  loadingBar: { height: '100%', backgroundColor: 'green' },
 });
 
 const BrowserScreen = () => {
@@ -35,15 +41,36 @@ const BrowserScreen = () => {
     [url],
   );
 
+  const progressAnim = useRef(new Animated.Value(0)).current;
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.urlText}>{urlTitle}</Text>
+    <SafeAreaView style={style.safeArea}>
+      <View style={style.container}>
+        <Text style={style.urlText}>{urlTitle}</Text>
+      </View>
+      <View style={style.loadingBarBackground}>
+        <Animated.View
+          style={[
+            style.loadingBar,
+            {
+              width: progressAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0%', '100%'],
+              }),
+            },
+          ]}
+        />
       </View>
       <WebView
         source={{ uri: initialUrl }}
         onNavigationStateChange={event => {
           setUrl(event.url);
+        }}
+        onLoadProgress={event => {
+          progressAnim.setValue(event.nativeEvent.progress);
+        }}
+        onLoadEnd={() => {
+          progressAnim.setValue(0);
         }}
       />
     </SafeAreaView>
